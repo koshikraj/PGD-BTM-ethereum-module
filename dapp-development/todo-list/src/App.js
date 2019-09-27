@@ -26,47 +26,28 @@ class App extends Component {
   }
 
   async loadBlockchainData() {
-    const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ account: accounts[0] });
-    this.todoList = new web3.eth.Contract(TODO_LIST_ABI, TODO_LIST_ADDRESS);
 
-    this.loadTasks();
+        // Load blockchain data
 
   }
 
   async loadTasks() {
-      const taskCount = await this.todoList.methods.taskCount().call();
-      this.setState({ taskCount, tasks: []});
 
-      for (let i = 1; i <= taskCount; i++) {
-          const task = await this.todoList.methods.tasks(i).call();
-          this.setState({
-              tasks: [...this.state.tasks, task]
-          })
-      }
-
-      this.setState({ loading: false })
+        // Load tasks
 
   }
 
 
   createTask(content) {
-    this.setState({ loading: true });
-    this.todoList.methods.createTask(content).send({ from: this.state.account })
-    .once('receipt', (receipt) => {
-        this.loadTasks();
-    })
+
+    // Create a task
+
   }
 
-    toggleTask(taskId) {
-    console.log(taskId);
-    this.setState({ loading: true });
-    this.todoList.methods.toggleTask(taskId).send({ from: this.state.account })
-    .once('receipt', (receipt) => {
-        this.loadTasks();
+  toggleTask(taskId) {
 
-    })
+    // Toggle the task
+
   }
 
   render() {
