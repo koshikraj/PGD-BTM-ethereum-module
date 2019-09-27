@@ -6,7 +6,7 @@ class TodoList extends Component {
     return (
       <div id="content">
         <form onSubmit={(event) => {
-          event.preventDefault()
+          event.preventDefault();
           this.props.createTask(this.task.value)
         }}>
           <input
@@ -30,7 +30,7 @@ class TodoList extends Component {
                   name={task.id}
                   defaultChecked={task.completed}
                   onClick={(event) => {
-                    this.props.toggleCompleted(task.id) }}/>
+                    this.props.toggleTask(task.id) }}/>
                   <span className="content">{task.content}</span>
                 </label>
               </div>

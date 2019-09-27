@@ -5,6 +5,22 @@ import { TODO_LIST_ABI, TODO_LIST_ADDRESS } from './config'
 import TodoList from './TodoList'
 
 class App extends Component {
+
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            account: '',
+            taskCount: 0,
+            tasks: [],
+            loading: true
+        };
+
+        this.createTask = this.createTask.bind(this);
+        this.toggleTask = this.toggleTask.bind(this);
+    }
+
+
   componentWillMount() {
     this.loadBlockchainData()
   }
@@ -30,23 +46,10 @@ class App extends Component {
           })
       }
 
-      console.log(this.state.tasks);
       this.setState({ loading: false })
 
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      account: '',
-      taskCount: 0,
-      tasks: [],
-      loading: true
-    }
-
-    this.createTask = this.createTask.bind(this);
-    this.toggleCompleted = this.toggleCompleted.bind(this);
-  }
 
   createTask(content) {
     this.setState({ loading: true });
@@ -56,10 +59,10 @@ class App extends Component {
     })
   }
 
-  toggleCompleted(taskId) {
+    toggleTask(taskId) {
     console.log(taskId);
-    this.setState({ loading: true })
-    this.todoList.methods.toggleCompleted(taskId).send({ from: this.state.account })
+    this.setState({ loading: true });
+    this.todoList.methods.toggleTask(taskId).send({ from: this.state.account })
     .once('receipt', (receipt) => {
         this.loadTasks();
 
@@ -85,7 +88,7 @@ class App extends Component {
                 : <TodoList
                   tasks={this.state.tasks}
                   createTask={this.createTask}
-                  toggleCompleted={this.toggleCompleted} />
+                  toggleTask={this.toggleTask} />
               }
             </main>
           </div>

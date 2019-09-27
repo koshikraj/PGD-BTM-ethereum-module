@@ -1,4 +1,4 @@
-export const TODO_LIST_ADDRESS = '0x135eefe996d85b0567200739440d6c52ba47a015';
+export const TODO_LIST_ADDRESS = '0x1f2D595fA2330563325F10837dEcE51f1EcF7580';
 
 export const TODO_LIST_ABI = [
     {
@@ -17,29 +17,25 @@ export const TODO_LIST_ABI = [
         "type": "function"
     },
     {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "toggleTask",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
         "type": "constructor"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "bool",
-                "name": "completed",
-                "type": "bool"
-            }
-        ],
-        "name": "TaskCompleted",
-        "type": "event"
     },
     {
         "anonymous": false,
@@ -67,19 +63,23 @@ export const TODO_LIST_ABI = [
         "type": "event"
     },
     {
-        "constant": false,
+        "anonymous": false,
         "inputs": [
             {
+                "indexed": false,
                 "internalType": "uint256",
-                "name": "_id",
+                "name": "id",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "completed",
+                "type": "bool"
             }
         ],
-        "name": "toggleCompleted",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
+        "name": "TaskToggled",
+        "type": "event"
     },
     {
         "constant": true,
@@ -127,4 +127,4 @@ export const TODO_LIST_ABI = [
         "stateMutability": "view",
         "type": "function"
     }
-]
+];
