@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { SliderPicker } from 'react-color';
 import getWeb3 from "../utils/getWeb3";
 import './App.css';
 import Color from '../abis/Color.json'
@@ -8,7 +7,7 @@ class App extends Component {
 
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             isConnected: false,
             account: '',
@@ -36,33 +35,38 @@ class App extends Component {
   async loadBlockchainData() {
     const web3 = this.web3;
     // Load account
-    const accounts = await web3.eth.getAccounts()
-    this.setState({ account: accounts[0] })
+    const accounts = await web3.eth.getAccounts();
+    this.setState({ account: accounts[0] });
 
-    const networkId = await web3.eth.net.getId()
-    const networkData = Color.networks[networkId]
+    const networkId = await web3.eth.net.getId();
+    const networkData = Color.networks[networkId];
     if(networkData) {
       const abi = Color.abi;
       const address = networkData.address;
-      const contract = new web3.eth.Contract(abi, address);
-      this.setState({ contract })
-      const totalSupply = await contract.methods.totalSupply().call();
-      this.setState({ totalSupply });
-      // Load Colors
-      for (var i = 1; i <= totalSupply; i++) {
-        const color = await contract.methods.colors(i - 1).call();
-        this.setState({
-          colors: [...this.state.colors, color]
-        })
-      }
+      this.contract = new web3.eth.Contract(abi, address);
+      await this.loadColorTokens();
     } else {
       window.alert('Smart contract not deployed to detected network.')
     }
   }
 
-  mint = (color) => {
-        console.log(color);
-    this.state.contract.methods.mint(color).send({ from: this.state.account })
+
+  async loadColorTokens() {
+      const totalSupply = await this.contract.methods.totalSupply().call();
+      this.setState({ totalSupply });
+      // Load Colors
+      for (var i = 1; i <= totalSupply; i++) {
+          const color = await this.contract.methods.colors(i - 1).call();
+          this.setState({
+              colors: [...this.state.colors, color]
+          })
+      }
+
+  }
+
+  mint(color) {
+
+    this.contract.methods.mint(color).send({ from: this.state.account })
     .on('transactionHash', (receipt) => {
         console.log('created');
       this.setState({
@@ -100,8 +104,8 @@ class App extends Component {
               <div className="content mr-auto ml-auto">
                 <h1>Issue Token</h1>
                 <form onSubmit={(event) => {
-                  event.preventDefault()
-                  const color = this.color.value
+                  event.preventDefault();
+                  const color = this.color.value;
                   this.mint(color)
                 }}>
                   <input

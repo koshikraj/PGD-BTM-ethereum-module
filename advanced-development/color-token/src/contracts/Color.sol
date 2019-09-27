@@ -1,5 +1,7 @@
 pragma solidity 0.5.0;
 
+// IMPORT ERC721Full token class
+
 import 'openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol';
 
 contract Color is ERC721Full {
